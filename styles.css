@@ -49,6 +49,11 @@ header {
     text-align: center;
 }
 
+header img {
+    max-width: 100%;
+    height: auto;
+}
+
 h1 {
     font-size: 2.8rem;
     margin-bottom: 10px;
@@ -546,4 +551,5 @@ footer {
         background: #333 !important;
         border-color: #fff !important;
     }
+
 } 
