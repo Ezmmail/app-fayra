@@ -1,7 +1,6 @@
 const CACHE_NAME = 'fayra-cache-v1';
 // Archivos que se guardarán en caché
 const urlsToCache = [
-  '/',
   'index.html',
   'styles.css',
   'script.js',
@@ -35,3 +34,4 @@ self.addEventListener('fetch', event => {
     )
   );
 });
+
