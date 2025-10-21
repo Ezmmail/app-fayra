@@ -5,7 +5,7 @@ const urlsToCache = [
   'index.html',
   'styles.css',
   'script.js',
-  'icon-192.png', // Asegúrate de agregar tus íconos
+  'icon-192.png',
   'icon-512.png'
 ];
 
@@ -20,7 +20,7 @@ self.addEventListener('install', event => {
   );
 });
 
-// Evento 'fetch': se dispara cada vez que la app pide un recurso (CSS, JS, imagen)
+// Evento 'fetch': se dispara cada vez que la app pide un recurso
 self.addEventListener('fetch', event => {
   event.respondWith(
     // 1. Busca en el caché primero
