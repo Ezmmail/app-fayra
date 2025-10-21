@@ -39,6 +39,17 @@ function formatDateTime() {
     });
 }
 
+// Función para calcular el factor de temperatura
+function calcularFactorTemperatura(temperatura) {
+    if (temperatura <= 5) {
+        return 3; // Triple de tiempo para 5°C o menos
+    } else if (temperatura > 5 && temperatura <= 12) {
+        return 2; // Doble de tiempo entre 5°C y 12°C
+    } else {
+        return 1; // Tiempo normal para 20°C o más
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const foodTypeSelect = document.getElementById('foodType');
     const temperatureInput = document.getElementById('temperature');
@@ -183,7 +194,7 @@ document.addEventListener('DOMContentLoaded', function() {
             unsafeMessage: 'Desechar - Productos lácteos son propensos al crecimiento bacteriano'
         },
         'frutas': {
-            maxTime: 2,
+            maxTime: 4,
             info: 'Frutas enteras: manzanas, plátanos, naranjas. El recipiente térmico puede generar humedad, acelerando su maduración o deterioro.',
             considerations: 'El recipiente térmico puede generar humedad, acelerando su maduración o deterioro. La superficie cortada aumenta el riesgo de crecimiento bacteriano.',
             unsafeMessage: 'Desechar - Frutas cortadas o en condiciones de riesgo'
@@ -201,19 +212,19 @@ document.addEventListener('DOMContentLoaded', function() {
             unsafeMessage: 'Evaluar - Verificar si hay signos de fermentación o moho'
         },
         'cocinados': {
-            maxTime: 2,
+            maxTime: 3,
             info: 'Arroz cocido, pasta cocida. Puede desarrollar la bacteria Bacillus cereus, que causas intoxicación alimentaria, si se deja a temperatura ambiente por mucho tiempo.',
             considerations: 'Puede desarrollar la bacteria Bacillus cereus, que causa intoxicación alimentaria, si se dejan a temperatura ambiente por mucho tiempo.',
             unsafeMessage: 'Desechar - Alto riesgo de intoxicación por Bacillus cereus'
         },
         'ensaladas': {
-            maxTime: 2,
+            maxTime: 4,
             info: 'Ensaladas preparadas o cortadas. La superficie cortada aumenta el riesgo de crecimiento bacteriano. Las ensaladas con aderezos cremosos son más vulnerables.',
             considerations: 'La superficie cortada aumenta el riesgo de crecimiento bacteriano. Las ensaladas con aderezos cremosos son más vulnerables.',
             unsafeMessage: 'Desechar - Alto riesgo de contaminación en ensaladas preparadas'
         },
         'salsas': {
-            maxTime: 2,
+            maxTime: 3,
             info: 'Salsas y aderezos. Las salsas a base de mayonesa o crema son especialmente vulnerables a temperaturas ambiente.',
             considerations: 'Las salsas con aderezos cremosos son más vulnerables. Mayonesa y salsas a base de huevo deben refrigerarse después de 2 horas.',
             unsafeMessage: 'Desechar - Salsas con base láctea o de huevo son de alto riesgo'
@@ -242,14 +253,27 @@ document.addEventListener('DOMContentLoaded', function() {
         let maxSafeTime = foodData.maxTime;
         let considerations = foodData.considerations;
         
-        // Ajustar por temperatura alta si aplica
+        // Calcular factor de temperatura
+        const factorTemperatura = calcularFactorTemperatura(temperature);
+        let maxSafeTimeAjustado = maxSafeTime * factorTemperatura;
+        
+        // Ajustar por temperatura alta si aplica (sobreescribe el ajuste por frío si la temperatura es muy alta)
         if (foodData.highTempThreshold && temperature > foodData.highTempThreshold) {
-            maxSafeTime = foodData.highTempReduction;
-            considerations += ` Tiempo reducido a ${maxSafeTime} hora(s) debido a alta temperatura (más de ${foodData.highTempThreshold}°C).`;
+            maxSafeTimeAjustado = foodData.highTempReduction;
+            considerations += ` Tiempo reducido a ${maxSafeTimeAjustado} hora(s) debido a alta temperatura (más de ${foodData.highTempThreshold}°C).`;
+        } else if (factorTemperatura > 1) {
+            // Solo mostrar mensaje de ajuste por frío si no estamos en alta temperatura
+            let mensajeTemperatura = '';
+            if (temperature <= 5) {
+                mensajeTemperatura = `Tiempo extendido al triple (${maxSafeTimeAjustado}h) por temperatura baja (${temperature}°C).`;
+            } else if (temperature <= 12) {
+                mensajeTemperatura = `Tiempo extendido al doble (${maxSafeTimeAjustado}h) por temperatura fresca (${temperature}°C).`;
+            }
+            considerations += ` ${mensajeTemperatura}`;
         }
         
         // Determinar si es seguro
-        let isSafe = exposureTime <= maxSafeTime;
+        let isSafe = exposureTime <= maxSafeTimeAjustado;
         let icon = "";
         let message = "";
         mensajeVozActual = "";
@@ -274,7 +298,7 @@ document.addEventListener('DOMContentLoaded', function() {
         timeDisplay.textContent = formatTimeForSpeech(elapsedSeconds);
 
         // Barra de progreso
-        let porcentaje = Math.min((exposureTime / maxSafeTime) * 100, 100);
+        let porcentaje = Math.min((exposureTime / maxSafeTimeAjustado) * 100, 100);
         progressBar.style.width = porcentaje + "%";
 
         resultDiv.style.display = 'block';
@@ -292,8 +316,8 @@ document.addEventListener('DOMContentLoaded', function() {
         infoContent.innerHTML = `<p>${foodData.info}</p>`;
         
         // Formatear el tiempo máximo seguro
-        const maxHours = Math.floor(maxSafeTime);
-        const maxMinutes = Math.round((maxSafeTime - maxHours) * 60);
+        const maxHours = Math.floor(maxSafeTimeAjustado);
+        const maxMinutes = Math.round((maxSafeTimeAjustado - maxHours) * 60);
         let maxTimeText = '';
         
         if (maxHours > 0) {
@@ -304,23 +328,17 @@ document.addEventListener('DOMContentLoaded', function() {
             maxTimeText += `${maxMinutes} minuto${maxMinutes !== 1 ? 's' : ''}`;
         }
         
-        maxTimeInfo.textContent = maxTimeText;
-        
-        if (foodData.highTempThreshold) {
-            const reducedHours = Math.floor(foodData.highTempReduction);
-            const reducedMinutes = Math.round((foodData.highTempReduction - reducedHours) * 60);
-            let reducedTimeText = '';
-            
-            if (reducedHours > 0) {
-                reducedTimeText += `${reducedHours} hora${reducedHours !== 1 ? 's' : ''}`;
-            }
-            if (reducedMinutes > 0) {
-                if (reducedHours > 0) reducedTimeText += ' y ';
-                reducedTimeText += `${reducedMinutes} minuto${reducedMinutes !== 1 ? 's' : ''}`;
-            }
-            
-            maxTimeInfo.textContent += ` (se reduce a ${reducedTimeText} sobre ${foodData.highTempThreshold}°C)`;
+        // Mostrar información del ajuste por temperatura
+        let infoTemperatura = '';
+        if (foodData.highTempThreshold && temperature > foodData.highTempThreshold) {
+            infoTemperatura = ` (reducido por alta temperatura >${foodData.highTempThreshold}°C)`;
+        } else if (temperature <= 5) {
+            infoTemperatura = ` (extendido al triple por temperatura ≤5°C)`;
+        } else if (temperature <= 12) {
+            infoTemperatura = ` (extendido al doble por temperatura 5-12°C)`;
         }
+        
+        maxTimeInfo.textContent = maxTimeText + infoTemperatura;
         
         considerationsInfo.textContent = considerations;
         
@@ -336,4 +354,5 @@ document.addEventListener('DOMContentLoaded', function() {
             hablar(mensajeVozActual);
         }
     });
+
 });
