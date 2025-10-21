@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FAYRA - Seguridad Alimentaria</title>
     <link rel="stylesheet" href="styles.css">
+
+    <link rel="manifest" href="manifest.json">
+
 </head>
 <body>
     <div class="container">
@@ -34,7 +37,6 @@
                     </select>
                 </div>
                 
-                <!-- Contador de tiempo automático -->
                 <div class="timer-section">
                     <div class="timer-display">
                         <div class="current-time">
@@ -73,7 +75,6 @@
                 
                 <button id="checkButton">Verificar Seguridad</button>
                 
-                <!-- Bloque de resultados -->
                 <div id="result" class="result">
                   <div id="iconResult" class="icon-result"></div>
                   <p id="messageResult"></p>
@@ -88,7 +89,6 @@
                     <p>⏱️ <span id="timeDisplay">--</span></p>
                   </div>
                   
-                  <!-- Botón de repetir mensaje de voz -->
                   <button id="repeatButton" class="voice-button">
                       <span class="voice-icon accessibility-badge">🔊</span>
                       <span class="voice-text">Repetir Mensaje de Voz</span>
@@ -119,5 +119,20 @@
     </div>
 
     <script src="script.js"></script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('serviceworker.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registrado con éxito:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('Error al registrar ServiceWorker:', error);
+                    });
+            });
+        }
+    </script>
+    
 </body>
 </html>
