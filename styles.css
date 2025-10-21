@@ -89,6 +89,11 @@ h1 {
     margin-bottom: 25px;
 }
 
+.card p {
+    font-size: 0.95rem;     /* Lo achicamos un poco */
+    margin-bottom: 15px;    /* <-- ESTA LÍNEA AGREGA EL ESPACIO */
+}
+
 h2 {
     font-size: 1.8rem;
     margin-bottom: 20px;
@@ -536,6 +541,13 @@ footer {
         flex-direction: column;
         gap: 5px;
     }
+    .subtitle {
+    font-size: 1.05rem; /* Achicamos "Frescura Alimenticia..." */
+    padding: 0 10px;  /* Le damos un espacio a los costados */
+}
+
+h2 {
+    font-size: 1.4rem; /* Achicamos "Verificador de Seguridad..." */
 }
 
 /* Modo alto contraste para el botón de voz */
@@ -553,3 +565,4 @@ footer {
     }
 
 } 
+
