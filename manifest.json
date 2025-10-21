@@ -1,0 +1,22 @@
+{
+  "name": "FAYRA - Seguridad Alimentaria",
+  "short_name": "FAYRA",
+  "description": "Sistema inteligente para verificar la seguridad de tus alimentos.",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#fffdf6",
+  "theme_color": "#6b0202",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}
