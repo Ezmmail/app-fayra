@@ -61,7 +61,6 @@ h1 {
 }
 
 .subtitle {
-    font-style: italic;
     margin-bottom: 15px;
     font-size: 1.2rem;
     opacity: 0.9;
@@ -92,8 +91,7 @@ h1 {
 .card p {
     font-size: 0.9rem;      /* Lo achicamos un poquito más */
     margin-bottom: 25px;    /* Le damos más espacio abajo */
-    text-align: center;     /* Lo centramos para que haga juego */
-    padding: 0 10px;        /* Evitamos que toque los bordes */
+   
 }
 
 h2 {
@@ -573,6 +571,7 @@ footer {
     }
 
 } 
+
 
 
 
