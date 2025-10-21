@@ -61,7 +61,7 @@ h1 {
 }
 
 .subtitle {
-    font-style:
+    font-style: italic;
     margin-bottom: 15px;
     font-size: 1.2rem;
     opacity: 0.9;
@@ -573,6 +573,7 @@ footer {
     }
 
 } 
+
 
 
 
