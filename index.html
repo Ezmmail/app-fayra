@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAYRA - Seguridad Alimentaria</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="https://1drv.ms/i/c/d227cc68ac2f597e/IQQXO-xrvUzaTbN59U59Bnv9ARwYEzb7iFJEspnRcMuWYt8?width=1148&height=383" width="380" height="130" />
+              <p class="subtitle">Frescura Alimenticia y Resguardo Asegurado</p>
+            <p class="tagline">Sistema inteligente para verificar la seguridad de tus alimentos</p>
+        </header>
+        
+        <div class="app-container">
+            <div class="card">
+                <h2>Verificador de Seguridad Alimentaria</h2>
+                <p>Selecciona el tipo de alimento y controla el tiempo de exposición automáticamente.</p>
+                              
+                <div class="form-group">
+                    <label for="foodType">Tipo de Alimento:</label>
+                    <select id="foodType">
+                        <option value="">Selecciona un tipo de alimento</option>
+                        <option value="carne">Carne de res, aves de corral, mariscos</option>
+                        <option value="lacteos">Lácteos y Huevos</option>
+                        <option value="frutas">Frutas y Vegetales</option>
+                        <option value="granos">Granos y Panes</option>
+                        <option value="azucar">Alimentos con Alto Azúcar</option>
+                        <option value="cocinados">Alimentos Cocidos (arroz, pasta, etc.)</option>
+                        <option value="ensaladas">Ensaladas Preparadas</option>
+                        <option value="salsas">Salsas y Aderezos</option>
+                    </select>
+                </div>
+                
+                <!-- Contador de tiempo automático -->
+                <div class="timer-section">
+                    <div class="timer-display">
+                        <div class="current-time">
+                            <span>🕐 Hora actual (AR): </span>
+                            <span id="currentTime">--:--:--</span>
+                        </div>
+                        <div class="exposure-time">
+                            <span>⏱️ Tiempo de exposición: </span>
+                            <span id="exposureTimer">00:00:00</span>
+                        </div>
+                    </div>
+                    
+                    <div class="timer-controls">
+                        <button id="startTimer" class="timer-btn start-btn">
+                            ▶️ COMENZAR
+                        </button>
+                        <button id="stopTimer" class="timer-btn stop-btn" disabled>
+                            ⏹️ DETENER
+                        </button>
+                        <button id="resetTimer" class="timer-btn reset-btn">
+                            🔄 REINICIAR
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="temperature">Temperatura Ambiente (°C):</label>
+                        <input type="number" id="temperature" value="25" placeholder="Ej: 25">
+                    </div>
+                    <div class="form-group">
+                        <label for="humidity">Humedad Relativa del Contenedor (%):</label>
+                        <input type="number" id="humidity" value="60" min="0" max="100" placeholder="Ej: 60">
+                    </div>
+                </div>
+                
+                <button id="checkButton">Verificar Seguridad</button>
+                
+                <!-- Bloque de resultados -->
+                <div id="result" class="result">
+                  <div id="iconResult" class="icon-result"></div>
+                  <p id="messageResult"></p>
+                  
+                  <div class="progress-container">
+                    <div id="progressBar" class="progress-bar"></div>
+                  </div>
+                
+                  <div class="sensor-data">
+                    <p>🌡️ <span id="tempDisplay">--</span> °C</p>
+                    <p>💧 <span id="humDisplay">--</span> %</p>
+                    <p>⏱️ <span id="timeDisplay">--</span></p>
+                  </div>
+                  
+                  <!-- Botón de repetir mensaje de voz -->
+                  <button id="repeatButton" class="voice-button">
+                      <span class="voice-icon accessibility-badge">🔊</span>
+                      <span class="voice-text">Repetir Mensaje de Voz</span>
+                  </button>
+                </div>
+                
+                <div id="foodInfo" class="food-info">
+                    <h3>Información de Seguridad Alimentaria</h3>
+                    <div id="infoContent"></div>
+                    <div class="food-details">
+                        <div class="detail-card">
+                            <h4>Tiempo Máximo Seguro</h4>
+                            <p id="maxTimeInfo">-</p>
+                        </div>
+                        <div class="detail-card">
+                            <h4>Consideraciones Especiales</h4>
+                            <p id="considerationsInfo">-</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>FAYRA - Frescura Alimenticia y Resguardo Asegurado</p>
+            <p>Basado en datos de seguridad alimentaria de https://espanol.foodsafety.gov</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
