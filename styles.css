@@ -518,7 +518,14 @@ footer {
     .food-details {
         grid-template-columns: 1fr;
     }
-    
+
+    .subtitle {
+    font-size: 1.05rem; /* Achicamos "Frescura Alimenticia..." */
+    padding: 0 10px;  /* Le damos un espacio a los costados */
+    }
+
+h2 {
+    font-size: 1.4rem; /* Achicamos "Verificador de Seguridad..." */
     h1 {
         font-size: 2.2rem;
     }
@@ -541,13 +548,7 @@ footer {
         flex-direction: column;
         gap: 5px;
     }
-    .subtitle {
-    font-size: 1.05rem; /* Achicamos "Frescura Alimenticia..." */
-    padding: 0 10px;  /* Le damos un espacio a los costados */
-}
-
-h2 {
-    font-size: 1.4rem; /* Achicamos "Verificador de Seguridad..." */
+    
 }
 
 /* Modo alto contraste para el botón de voz */
@@ -565,4 +566,5 @@ h2 {
     }
 
 } 
+
 
