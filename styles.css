@@ -90,8 +90,10 @@ h1 {
 }
 
 .card p {
-    font-size: 0.95rem;     /* Lo achicamos un poco */
-    margin-bottom: 15px;    /* <-- ESTA LÍNEA AGREGA EL ESPACIO */
+    font-size: 0.9rem;      /* Lo achicamos un poquito más */
+    margin-bottom: 25px;    /* Le damos más espacio abajo */
+    text-align: center;     /* Lo centramos para que haga juego */
+    padding: 0 10px;        /* Evitamos que toque los bordes */
 }
 
 h2 {
@@ -524,8 +526,13 @@ footer {
     padding: 0 10px;  /* Le damos un espacio a los costados */
     }
 
-h2 {
-    font-size: 1.4rem; /* Achicamos "Verificador de Seguridad..." */
+    h2 {
+        font-size: 1.35rem;  /* Lo ajustamos un poco más */
+        text-align: center;  /* <<< LA SOLUCIÓN PRINCIPAL */
+        border-bottom: none; /* Sacamos la línea de abajo */
+        padding-bottom: 0;   /* Sacamos el padding de la línea */
+        margin-bottom: 15px; /* Le damos espacio para compensar */
+    }
     h1 {
         font-size: 2.2rem;
     }
@@ -566,5 +573,6 @@ h2 {
     }
 
 } 
+
 
 
