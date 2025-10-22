@@ -85,6 +85,22 @@ document.addEventListener('DOMContentLoaded', function() {
     let isTimerRunning = false;
     let mensajeVozActual = '';
     
+    // Revisa si había un temporizador corriendo cuando se cerró la app
+    let savedStartTime = localStorage.getItem('timerStartTime');
+    if (savedStartTime) {
+        // Sí, había uno. Calcula el tiempo transcurrido desde entonces.
+        startTime = parseInt(savedStartTime, 10);
+        isTimerRunning = true;
+        elapsedSeconds = Math.floor((new Date().getTime() - startTime) / 1000);
+        
+        // Reactiva el intervalo solo para que el reloj de la UI se mueva
+        timerInterval = setInterval(updateExposureTimer, 1000); 
+        
+        // Actualiza los botones para que muestren "corriendo"
+        startTimerBtn.disabled = true;
+        stopTimerBtn.disabled = false;
+        timerSection.classList.add('timer-active');
+    }
     // Ocultar botón de repetir inicialmente
     repeatButton.style.display = 'none';
     
@@ -106,6 +122,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function startTimer() {
         if (!isTimerRunning) {
             startTime = new Date().getTime() - (elapsedSeconds * 1000);
+            localStorage.setItem('timerStartTime', startTime); // <-- Guarda la hora de inicio
             isTimerRunning = true;
             
             timerInterval = setInterval(() => {
@@ -126,6 +143,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (isTimerRunning) {
             clearInterval(timerInterval);
             isTimerRunning = false;
+            localStorage.removeItem('timerStartTime'); // <-- Borra la hora de inicio guardada
             
             // Actualizar UI
             startTimerBtn.disabled = false;
@@ -356,3 +374,4 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 });
+
