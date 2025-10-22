@@ -46,7 +46,7 @@ function calcularFactorTemperatura(temperatura) {
     } else if (temperatura > 5 && temperatura <= 12) {
         return 2; // Doble de tiempo entre 5°C y 12°C
     } else {
-        return 1; // Tiempo normal para 20°C o más
+        return 1; // Tiempo normal para más de 12°C
     }
 }
 
@@ -374,4 +374,5 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 });
+
 
