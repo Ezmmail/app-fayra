@@ -169,16 +169,15 @@ button:active {
     transform: translateY(0);
 }
 
-/* ▼▼▼ ESTE ES EL NUEVO ESTILO ▼▼▼ */
+/* ESTILO BOTÓN CONECTAR (Corregido) */
 .connect-btn {
-    background: linear-gradient(to right, var(--timer-color), #64b5f6);
-    margin-bottom: 20px; /* Para separarlo de los inputs */
-}
-.connect-btn:hover {
     background: linear-gradient(to right, var(--timer-color), #64b5f6);
     margin-bottom: 20px; /* Para separarlo de los inputs */
     border-radius: 8px;  /* <-- ESTO LO HACE RECTANGULAR */
     padding: 12px 20px;  /* <-- Ajuste de padding */
+}
+.connect-btn:hover {
+    background: linear-gradient(to right, #64b5f6, var(--timer-color));
 }
 
 /* TEMPORIZADOR */
@@ -589,4 +588,3 @@ footer {
         border-color: #fff !important;
     }
 }
-
