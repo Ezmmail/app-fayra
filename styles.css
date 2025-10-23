@@ -147,8 +147,8 @@ button {
     background: linear-gradient(to right, var(--primary-color), var(--primary-dark));
     color: white;
     border: none;
-    padding: 15px 25px;
-    border-radius: 30px;
+    padding: 15px 20px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 16px;
     font-weight: bold;
@@ -588,3 +588,4 @@ footer {
         border-color: #fff !important;
     }
 }
+
