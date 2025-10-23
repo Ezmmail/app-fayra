@@ -12,6 +12,14 @@ function hablar(texto) {
     }
 }
 
+// --- CONSTANTES DE BLUETOOTH ---
+const FAYRA_SERVICE_UUID = "f0e10000-0000-4a0f-9b3a-0000c0ffee00";
+const FAYRA_TEMP_CHAR_UUID = "f0e10001-0000-4a0f-9b3a-0000c0ffee00";
+const FAYRA_HUM_CHAR_UUID = "f0e10002-0000-4a0f-9b3a-0000c0ffee00";
+
+// Declaramos estas variables aquí para que sean globales
+let temperatureInput, humidityInput;
+
 // Función para obtener hora de Buenos Aires CORREGIDA
 function getBuenosAiresTime() {
     return new Date().toLocaleString("es-AR", {
@@ -50,10 +58,81 @@ function calcularFactorTemperatura(temperatura) {
     }
 }
 
+
+// --- FUNCIONES DE BLUETOOTH ---
+
+async function connectToDevice() {
+    try {
+        console.log('Buscando dispositivo FAYRA-C1...');
+        hablar('Buscando recipiente. Por favor, selecciona FAYRA-C1 en la lista.');
+        
+        const device = await navigator.bluetooth.requestDevice({
+            filters: [{ services: [FAYRA_SERVICE_UUID] }],
+            optionalServices: [FAYRA_SERVICE_UUID]
+        });
+        
+        console.log('Conectando a', device.name);
+        hablar('Conectando a ' + device.name);
+        const server = await device.gatt.connect();
+        
+        console.log('Obteniendo servicio...');
+        const service = await server.getPrimaryService(FAYRA_SERVICE_UUID);
+        
+        console.log('Obteniendo características (Temp y Hum)...');
+        const tempChar = await service.getCharacteristic(FAYRA_TEMP_CHAR_UUID);
+        const humChar = await service.getCharacteristic(FAYRA_HUM_CHAR_UUID);
+        
+        console.log('Suscribiendo a notificaciones...');
+        
+        await tempChar.startNotifications();
+        tempChar.addEventListener('characteristicvaluechanged', handleTempChange);
+        
+        await humChar.startNotifications();
+        humChar.addEventListener('characteristicvaluechanged', handleHumChange);
+        
+        console.log('¡Conectado y suscrito! Esperando datos...');
+        hablar('Conexión exitosa. Recibiendo datos del recipiente.');
+
+    } catch(error) {
+        console.error('¡Error de Bluetooth!', error);
+        hablar('Error al conectar: ' + error.message);
+    }
+}
+
+function handleTempChange(event) {
+    const value = event.target.value; // Esto es un DataView
+    // El script de Python usaba '<f' (Little-endian float de 4 bytes)
+    const temp = value.getFloat32(0, true); // true = Little-endian
+    console.log('Temp:', temp);
+    
+    // Actualizar el input en la UI
+    if (temperatureInput) {
+        temperatureInput.value = temp.toFixed(1); // .toFixed(1) para un decimal
+    }
+}
+
+function handleHumChange(event) {
+    const value = event.target.value;
+    // La humedad también era un float de 4 bytes
+    const hum = value.getFloat32(0, true);
+    console.log('Humedad:', hum);
+    
+    // Actualizar el input en la UI
+    if (humidityInput) {
+        humidityInput.value = hum.toFixed(1);
+    }
+}
+
+// --- FIN DE FUNCIONES BLUETOOTH ---
+
+
 document.addEventListener('DOMContentLoaded', function() {
+    // Asignamos las variables globales
+    temperatureInput = document.getElementById('temperature');
+    humidityInput = document.getElementById('humidity');
+
+    // Resto de los elementos
     const foodTypeSelect = document.getElementById('foodType');
-    const temperatureInput = document.getElementById('temperature');
-    const humidityInput = document.getElementById('humidity');
     const checkButton = document.getElementById('checkButton');
     const resultDiv = document.getElementById('result');
     const foodInfoDiv = document.getElementById('foodInfo');
@@ -77,6 +156,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const stopTimerBtn = document.getElementById('stopTimer');
     const resetTimerBtn = document.getElementById('resetTimer');
     const timerSection = document.querySelector('.timer-section');
+
+    // Botón de conexión Bluetooth
+    const connectButton = document.getElementById('connectButton');
     
     // Variables del temporizador
     let startTime = null;
@@ -85,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let isTimerRunning = false;
     let mensajeVozActual = '';
     
-    // Revisa si había un temporizador corriendo cuando se cerró la app
+    // Revisa si había un temporizador corriendo cuando se cerró la app (Lógica de Persistencia)
     let savedStartTime = localStorage.getItem('timerStartTime');
     if (savedStartTime) {
         // Sí, había uno. Calcula el tiempo transcurrido desde entonces.
@@ -101,10 +183,11 @@ document.addEventListener('DOMContentLoaded', function() {
         stopTimerBtn.disabled = false;
         timerSection.classList.add('timer-active');
     }
+
     // Ocultar botón de repetir inicialmente
     repeatButton.style.display = 'none';
     
-    // Actualizar hora actual cada segundo - CORREGIDO
+    // Actualizar hora actual cada segundo
     function updateCurrentTime() {
         currentTimeDisplay.textContent = formatDateTime();
     }
@@ -188,10 +271,11 @@ document.addEventListener('DOMContentLoaded', function() {
     setInterval(updateCurrentTime, 1000);
     updateExposureTimer();
     
-    // Event listeners para el temporizador
+    // Event listeners para el temporizador y Bluetooth
     startTimerBtn.addEventListener('click', startTimer);
     stopTimerBtn.addEventListener('click', stopTimer);
     resetTimerBtn.addEventListener('click', resetTimer);
+    connectButton.addEventListener('click', connectToDevice); // <-- Listener del botón BT
     
     // Datos de seguridad alimentaria
     const foodSafetyData = {
@@ -372,7 +456,4 @@ document.addEventListener('DOMContentLoaded', function() {
             hablar(mensajeVozActual);
         }
     });
-
 });
-
-
