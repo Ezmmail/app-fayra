@@ -61,6 +61,7 @@ h1 {
 }
 
 .subtitle {
+    /* font-style: italic; <-- Sacamos esto ayer */
     margin-bottom: 15px;
     font-size: 1.2rem;
     opacity: 0.9;
@@ -88,10 +89,10 @@ h1 {
     margin-bottom: 25px;
 }
 
+/* Párrafo "Selecciona..." (Alineado a la izq, con margen) */
 .card p {
-    font-size: 0.9rem;      /* Lo achicamos un poquito más */
-    margin-bottom: 25px;    /* Le damos más espacio abajo */
-   
+    font-size: 0.95rem;     
+    margin-bottom: 20px;    
 }
 
 h2 {
@@ -166,6 +167,17 @@ button:hover {
 button:active {
     transform: translateY(0);
 }
+
+/* ▼▼▼ ESTE ES EL NUEVO ESTILO ▼▼▼ */
+.connect-btn {
+    background: linear-gradient(to right, var(--timer-color), #64b5f6);
+    margin-bottom: 20px; /* Para separarlo de los inputs */
+}
+.connect-btn:hover {
+    background: linear-gradient(to right, #64b5f6, var(--timer-color));
+}
+/* ▲▲▲ FIN DEL NUEVO ESTILO ▲▲▲ */
+
 
 /* TEMPORIZADOR */
 .timer-section {
@@ -519,18 +531,20 @@ footer {
         grid-template-columns: 1fr;
     }
 
+    /* Correcciones de Títulos para Celular */
     .subtitle {
-    font-size: 1.05rem; /* Achicamos "Frescura Alimenticia..." */
-    padding: 0 10px;  /* Le damos un espacio a los costados */
+        font-size: 1.05rem; 
+        padding: 0 10px;  
     }
 
     h2 {
-        font-size: 1.35rem;  /* Lo ajustamos un poco más */
-        text-align: center;  /* <<< LA SOLUCIÓN PRINCIPAL */
-        border-bottom: none; /* Sacamos la línea de abajo */
-        padding-bottom: 0;   /* Sacamos el padding de la línea */
-        margin-bottom: 15px; /* Le damos espacio para compensar */
+        font-size: 1.35rem;
+        text-align: center;
+        border-bottom: none;
+        padding-bottom: 0;
+        margin-bottom: 15px;
     }
+    
     h1 {
         font-size: 2.2rem;
     }
@@ -553,7 +567,6 @@ footer {
         flex-direction: column;
         gap: 5px;
     }
-    
 }
 
 /* Modo alto contraste para el botón de voz */
@@ -569,11 +582,4 @@ footer {
         background: #333 !important;
         border-color: #fff !important;
     }
-
-} 
-
-
-
-
-
-
+}
