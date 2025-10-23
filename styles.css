@@ -111,10 +111,11 @@ h2 {
 .form-row {
     display: flex;
     gap: 15px;
+    justify-content: center;
 }
 
 .form-row .form-group {
-    flex: 1;
+    width: 180px;
     margin-bottom: 20px;
 }
 
@@ -174,10 +175,11 @@ button:active {
     margin-bottom: 20px; /* Para separarlo de los inputs */
 }
 .connect-btn:hover {
-    background: linear-gradient(to right, #64b5f6, var(--timer-color));
+    background: linear-gradient(to right, var(--timer-color), #64b5f6);
+    margin-bottom: 20px; /* Para separarlo de los inputs */
+    border-radius: 8px;  /* <-- ESTO LO HACE RECTANGULAR */
+    padding: 12px 20px;  /* <-- Ajuste de padding */
 }
-/* ▲▲▲ FIN DEL NUEVO ESTILO ▲▲▲ */
-
 
 /* TEMPORIZADOR */
 .timer-section {
@@ -508,6 +510,10 @@ footer {
         gap: 0;
     }
     
+    .form-row .form-group {
+        width: 100%;
+    }
+    
     .timer-display {
         grid-template-columns: 1fr;
         gap: 10px;
@@ -583,3 +589,4 @@ footer {
         border-color: #fff !important;
     }
 }
+
