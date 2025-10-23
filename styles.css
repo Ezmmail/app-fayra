@@ -134,6 +134,8 @@ select, input {
     font-size: 16px;
     transition: all 0.3s ease;
     background-color: #fff;
+    text-align: center;
+    font-weight: bold;
 }
 
 select:focus, input:focus {
@@ -588,5 +590,6 @@ footer {
         border-color: #fff !important;
     }
 }
+
 
 
